@@ -29,10 +29,12 @@ namespace DrinkStores
             services.AddDbContext<StoreDbContext>(
                 opts =>
                 {
-                    opts.UseSqlServer(Configuration["ConnectionStrings:DrinkStoresConnection"]);
+                    opts.UseSqlServer
+                        (Configuration["ConnectionStrings:DrinkStoresConnection"]);
                 }
                 );
             services.AddScoped<IStoreRepository, EFStoreRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,22 +60,32 @@ namespace DrinkStores
             app.UseEndpoints(endpoints =>
             {
                 //endpoints.MapControllerRoute(
-                //     "pagination", "Products/Page{productPage}",
-                //    new { Controller = "Home", action = "Index" });
-                endpoints.MapControllerRoute("catpage", "{category}/Page{productPage:int}",
-                      new { Controller = "Home", action = "Index" });
+                //    name: "default",
+                //    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-                endpoints.MapControllerRoute("page", "Page{productPage:int}",
+                //endpoints.MapControllerRoute(
+                //   "pagination", "Products/Page{productPage}",
+                //   new { Controller = "Home", action = "Index"});
+
+                endpoints.MapControllerRoute("catpage",
+                    "{category}/Page{productPage:int}",
+                    new { Controller = "Home", action = "Index" });
+
+                endpoints.MapControllerRoute("page",
+                    "Page{productPage:int}",
                     new { Controller = "Home", action = "Index", productPage = 1 });
 
-                endpoints.MapControllerRoute("category", "{category}",
+                endpoints.MapControllerRoute("category",
+                    "{category}",
                     new { Controller = "Home", action = "Index", productPage = 1 });
 
-                endpoints.MapControllerRoute("pagination", "Products/Page{productPage}",
+                endpoints.MapControllerRoute("pagination",
+                    "Products/Page{productPage}",
                     new { Controller = "Home", action = "Index", productPage = 1 });
+
                 endpoints.MapDefaultControllerRoute();
             });
-                SeedData.EnsurePopulated(app);
+            SeedData.EnsurePopulated(app);
         }
     }
 }
