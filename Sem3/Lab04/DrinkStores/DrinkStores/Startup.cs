@@ -71,6 +71,7 @@ namespace DrinkStores
 
                 endpoints.MapControllerRoute("pagination", "Products/Page{productPage}",
                     new { Controller = "Home", action = "Index", productPage = 1 });
+                endpoints.MapDefaultControllerRoute();
             });
                 SeedData.EnsurePopulated(app);
         }
